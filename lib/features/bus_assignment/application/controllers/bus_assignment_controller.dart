@@ -20,9 +20,11 @@ class BusAssignmentController extends ChangeNotifier {
   Future<void> loadBuses() async {
     try {
       final res = await _api.dio.get('/buses', options: await _api.auth());
+      final payload = res.data['data'];
+      final items = payload is List ? payload : const <dynamic>[];
       buses
         ..clear()
-        ..addAll(res.data['data'] as List<dynamic>);
+        ..addAll(items);
       status = buses.isEmpty ? 'Sin microbuses disponibles.' : 'Microbuses cargados.';
     } catch (_) {
       buses.clear();

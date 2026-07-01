@@ -19,9 +19,11 @@ class AuditViewController extends ChangeNotifier {
   Future<void> loadAudit() async {
     try {
       final res = await _api.dio.get('/audit', options: await _api.auth());
+      final payload = res.data['data'];
+      final items = payload is List ? payload : const <dynamic>[];
       rows
         ..clear()
-        ..addAll(res.data['data'] as List<dynamic>);
+        ..addAll(items);
       status = rows.isEmpty ? 'Sin eventos.' : 'Eventos cargados.';
     } catch (_) {
       rows.clear();
