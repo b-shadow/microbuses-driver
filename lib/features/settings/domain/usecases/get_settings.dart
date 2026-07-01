@@ -1,0 +1,4 @@
+class GetSettingsUseCase {
+  const GetSettingsUseCase();
+}
+

@@ -1,0 +1,4 @@
+class AuditViewMapper {
+  const AuditViewMapper();
+}
+

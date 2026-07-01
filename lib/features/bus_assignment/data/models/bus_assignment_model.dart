@@ -1,0 +1,4 @@
+class BusAssignmentModel {
+  const BusAssignmentModel();
+}
+

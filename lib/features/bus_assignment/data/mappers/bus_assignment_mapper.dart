@@ -1,0 +1,4 @@
+class BusAssignmentMapper {
+  const BusAssignmentMapper();
+}
+

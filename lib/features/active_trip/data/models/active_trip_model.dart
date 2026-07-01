@@ -1,0 +1,4 @@
+class ActiveTripModel {
+  const ActiveTripModel();
+}
+

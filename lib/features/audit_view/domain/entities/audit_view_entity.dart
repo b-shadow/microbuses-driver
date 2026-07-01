@@ -1,0 +1,4 @@
+class AuditViewEntity {
+  const AuditViewEntity();
+}
+

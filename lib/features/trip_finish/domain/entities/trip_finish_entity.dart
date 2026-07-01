@@ -1,0 +1,4 @@
+class TripFinishEntity {
+  const TripFinishEntity();
+}
+

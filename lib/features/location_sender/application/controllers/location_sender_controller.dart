@@ -1,0 +1,4 @@
+class LocationSenderController {
+  const LocationSenderController();
+}
+

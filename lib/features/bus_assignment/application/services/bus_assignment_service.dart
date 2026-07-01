@@ -1,0 +1,4 @@
+class BusAssignmentService {
+  const BusAssignmentService();
+}
+

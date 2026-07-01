@@ -1,0 +1,4 @@
+class ActiveTripEntity {
+  const ActiveTripEntity();
+}
+

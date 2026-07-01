@@ -1,0 +1,4 @@
+class GetLineSelectionUseCase {
+  const GetLineSelectionUseCase();
+}
+

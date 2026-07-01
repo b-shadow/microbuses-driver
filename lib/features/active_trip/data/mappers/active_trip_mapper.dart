@@ -1,0 +1,4 @@
+class ActiveTripMapper {
+  const ActiveTripMapper();
+}
+

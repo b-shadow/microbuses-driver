@@ -1,0 +1,4 @@
+class ActiveTripService {
+  const ActiveTripService();
+}
+

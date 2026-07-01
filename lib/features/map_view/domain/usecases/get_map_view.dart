@@ -1,0 +1,4 @@
+class GetMapViewUseCase {
+  const GetMapViewUseCase();
+}
+

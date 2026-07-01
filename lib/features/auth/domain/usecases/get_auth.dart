@@ -1,0 +1,4 @@
+class GetAuthUseCase {
+  const GetAuthUseCase();
+}
+

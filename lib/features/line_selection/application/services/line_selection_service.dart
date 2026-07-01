@@ -1,0 +1,4 @@
+class LineSelectionService {
+  const LineSelectionService();
+}
+

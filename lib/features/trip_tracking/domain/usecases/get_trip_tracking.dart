@@ -1,0 +1,4 @@
+class GetTripTrackingUseCase {
+  const GetTripTrackingUseCase();
+}
+

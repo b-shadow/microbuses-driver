@@ -1,0 +1,4 @@
+class BusRegistrationMapper {
+  const BusRegistrationMapper();
+}
+

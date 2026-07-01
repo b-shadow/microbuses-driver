@@ -1,0 +1,4 @@
+class GetActiveTripUseCase {
+  const GetActiveTripUseCase();
+}
+

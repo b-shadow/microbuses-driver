@@ -1,0 +1,4 @@
+class GetAuditViewUseCase {
+  const GetAuditViewUseCase();
+}
+

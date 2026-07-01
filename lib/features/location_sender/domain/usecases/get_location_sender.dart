@@ -1,0 +1,4 @@
+class GetLocationSenderUseCase {
+  const GetLocationSenderUseCase();
+}
+

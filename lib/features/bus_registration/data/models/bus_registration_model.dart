@@ -1,0 +1,4 @@
+class BusRegistrationModel {
+  const BusRegistrationModel();
+}
+

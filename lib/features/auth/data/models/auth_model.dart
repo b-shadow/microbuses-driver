@@ -1,0 +1,4 @@
+class AuthModel {
+  const AuthModel();
+}
+

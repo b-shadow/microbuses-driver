@@ -1,0 +1,4 @@
+class DriverProfileModel {
+  const DriverProfileModel();
+}
+

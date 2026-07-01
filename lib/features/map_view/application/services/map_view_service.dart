@@ -1,0 +1,4 @@
+class MapViewService {
+  const MapViewService();
+}
+

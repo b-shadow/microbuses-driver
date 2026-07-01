@@ -1,0 +1,4 @@
+class MapViewController {
+  const MapViewController();
+}
+

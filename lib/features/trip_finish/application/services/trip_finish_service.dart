@@ -1,0 +1,4 @@
+class TripFinishService {
+  const TripFinishService();
+}
+

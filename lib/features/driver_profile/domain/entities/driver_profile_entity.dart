@@ -1,0 +1,4 @@
+class DriverProfileEntity {
+  const DriverProfileEntity();
+}
+

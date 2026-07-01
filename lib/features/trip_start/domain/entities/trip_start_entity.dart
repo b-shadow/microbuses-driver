@@ -1,0 +1,4 @@
+class TripStartEntity {
+  const TripStartEntity();
+}
+

@@ -1,0 +1,4 @@
+class LocationSenderMapper {
+  const LocationSenderMapper();
+}
+

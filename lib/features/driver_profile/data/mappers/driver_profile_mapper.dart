@@ -1,0 +1,4 @@
+class DriverProfileMapper {
+  const DriverProfileMapper();
+}
+

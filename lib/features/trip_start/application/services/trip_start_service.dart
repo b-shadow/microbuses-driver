@@ -1,0 +1,4 @@
+class TripStartService {
+  const TripStartService();
+}
+

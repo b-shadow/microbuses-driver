@@ -1,0 +1,4 @@
+class TripStartModel {
+  const TripStartModel();
+}
+

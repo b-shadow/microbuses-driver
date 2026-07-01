@@ -1,0 +1,4 @@
+class LineSelectionModel {
+  const LineSelectionModel();
+}
+

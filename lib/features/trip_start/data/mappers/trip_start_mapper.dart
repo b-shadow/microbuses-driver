@@ -1,0 +1,4 @@
+class TripStartMapper {
+  const TripStartMapper();
+}
+

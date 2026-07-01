@@ -1,0 +1,4 @@
+class TripTrackingController {
+  const TripTrackingController();
+}
+

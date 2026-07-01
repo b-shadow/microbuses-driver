@@ -1,0 +1,4 @@
+class BusRegistrationService {
+  const BusRegistrationService();
+}
+

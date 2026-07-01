@@ -1,0 +1,4 @@
+class TripTrackingEntity {
+  const TripTrackingEntity();
+}
+

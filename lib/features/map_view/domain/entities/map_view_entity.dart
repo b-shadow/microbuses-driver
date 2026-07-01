@@ -1,0 +1,4 @@
+class MapViewEntity {
+  const MapViewEntity();
+}
+

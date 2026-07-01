@@ -1,0 +1,4 @@
+class GetTripFinishUseCase {
+  const GetTripFinishUseCase();
+}
+

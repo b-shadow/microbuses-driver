@@ -1,0 +1,4 @@
+class AuditViewModel {
+  const AuditViewModel();
+}
+

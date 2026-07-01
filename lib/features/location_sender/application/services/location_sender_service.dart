@@ -1,0 +1,4 @@
+class LocationSenderService {
+  const LocationSenderService();
+}
+

@@ -1,0 +1,4 @@
+class SettingsService {
+  const SettingsService();
+}
+

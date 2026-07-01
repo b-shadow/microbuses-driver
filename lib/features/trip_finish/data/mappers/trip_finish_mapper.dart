@@ -1,0 +1,4 @@
+class TripFinishMapper {
+  const TripFinishMapper();
+}
+

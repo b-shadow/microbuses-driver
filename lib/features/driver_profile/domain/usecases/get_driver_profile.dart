@@ -1,0 +1,4 @@
+class GetDriverProfileUseCase {
+  const GetDriverProfileUseCase();
+}
+
