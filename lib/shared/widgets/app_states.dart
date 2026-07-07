@@ -10,10 +10,12 @@ class StatusBanner extends StatelessWidget {
   Widget build(BuildContext context) {
     if (text.trim().isEmpty) return const SizedBox.shrink();
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final background = isError
+    final effectiveIsError = isError || _looksLikeError(text);
+    final background = effectiveIsError
         ? const Color(0xFF7F1D1D).withValues(alpha: isDark ? 0.35 : 0.12)
         : const Color(0xFF14532D).withValues(alpha: isDark ? 0.35 : 0.12);
-    final border = isError ? const Color(0xFFF87171) : const Color(0xFF4ADE80);
+    final border =
+        effectiveIsError ? const Color(0xFFF87171) : const Color(0xFF4ADE80);
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
@@ -24,7 +26,12 @@ class StatusBanner extends StatelessWidget {
       ),
       child: Row(
         children: [
-          Icon(isError ? Icons.error_outline : Icons.check_circle_outline, color: border, size: 18),
+          Icon(
+              effectiveIsError
+                  ? Icons.error_outline
+                  : Icons.check_circle_outline,
+              color: border,
+              size: 18),
           const SizedBox(width: 10),
           Expanded(
             child: Text(
@@ -39,10 +46,22 @@ class StatusBanner extends StatelessWidget {
       ),
     );
   }
+
+  bool _looksLikeError(String value) {
+    final normalized = value.toLowerCase();
+    return normalized.contains('no se pudo') ||
+        normalized.contains('permiso') ||
+        normalized.contains('denegado') ||
+        normalized.contains('activa la ubicacion') ||
+        normalized.contains('sin conexion') ||
+        normalized.contains('codigo http') ||
+        normalized.contains('debug:');
+  }
 }
 
 class EmptyStateCard extends StatelessWidget {
-  const EmptyStateCard({super.key, required this.title, required this.subtitle});
+  const EmptyStateCard(
+      {super.key, required this.title, required this.subtitle});
 
   final String title;
   final String subtitle;
@@ -54,14 +73,21 @@ class EmptyStateCard extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF111827) : Colors.white.withValues(alpha: 0.88),
+        color: isDark
+            ? const Color(0xFF111827)
+            : Colors.white.withValues(alpha: 0.88),
         borderRadius: BorderRadius.circular(22),
-        border: Border.all(color: isDark ? const Color(0xFF1E3A5F) : const Color(0xFFDBEAFE)),
+        border: Border.all(
+            color: isDark ? const Color(0xFF1E3A5F) : const Color(0xFFDBEAFE)),
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text(title, style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700)),
+          Text(title,
+              style: Theme.of(context)
+                  .textTheme
+                  .titleMedium
+                  ?.copyWith(fontWeight: FontWeight.w700)),
           const SizedBox(height: 6),
           Text(subtitle, textAlign: TextAlign.center),
         ],
@@ -82,9 +108,12 @@ class SectionCard extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF111827) : Colors.white.withValues(alpha: 0.9),
+        color: isDark
+            ? const Color(0xFF111827)
+            : Colors.white.withValues(alpha: 0.9),
         borderRadius: BorderRadius.circular(22),
-        border: Border.all(color: isDark ? const Color(0xFF1E3A5F) : const Color(0xFFDBEAFE)),
+        border: Border.all(
+            color: isDark ? const Color(0xFF1E3A5F) : const Color(0xFFDBEAFE)),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: isDark ? 0.16 : 0.05),

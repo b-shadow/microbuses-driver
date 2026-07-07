@@ -5,7 +5,7 @@ Aplicación Flutter para conductores SIG Microbuses.
 ## Ejecutar
 ```bash
 flutter pub get
-flutter run --dart-define=API_BASE=http://localhost:8000/api/v1
+flutter run --dart-define=API_BASE=http://sig.leonardoserrate.xyz/api/v1
 ```
 
 ## Incluye en MVP actual

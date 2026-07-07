@@ -29,7 +29,8 @@ class _DriverLoginPageState extends State<DriverLoginPage> {
   Future<void> _login() async {
     setState(() => _loading = true);
     try {
-      final res = await _api.dio.post('/auth/login', data: {'email': _email.text.trim(), 'password': _password.text});
+      final res = await _api.dio.post('/auth/login',
+          data: {'email': _email.text.trim(), 'password': _password.text});
       final token = res.data['data']?['access_token'] as String?;
       if (token == null || token.isEmpty) {
         setState(() => _status = 'Credenciales invalidas.');
@@ -39,8 +40,13 @@ class _DriverLoginPageState extends State<DriverLoginPage> {
       await prefs.setString('driver_access_token', token);
       if (!mounted) return;
       Navigator.pushReplacementNamed(context, AppRouter.home);
-    } catch (_) {
-      setState(() => _status = 'Error de autenticacion');
+    } catch (error) {
+      setState(
+        () => _status = DriverApi.describeError(
+          error,
+          fallback: 'Error de autenticacion.',
+        ),
+      );
     } finally {
       if (mounted) setState(() => _loading = false);
     }
@@ -66,13 +72,16 @@ class _DriverLoginPageState extends State<DriverLoginPage> {
             children: [
               const DriverHeroCard(
                 title: 'Acceso de conductor',
-                subtitle: 'Inicia sesion para seleccionar microbus, activar recorrido y sincronizar ubicacion con el backend.',
-                trailing: FaIcon(FontAwesomeIcons.idCardClip, size: 40, color: Colors.white),
+                subtitle:
+                    'Inicia sesion para seleccionar microbus, activar recorrido y sincronizar ubicacion con el backend.',
+                trailing: FaIcon(FontAwesomeIcons.idCardClip,
+                    size: 40, color: Colors.white),
               ),
               const SizedBox(height: 18),
               DriverListCard(
                 title: 'Credenciales operativas',
-                subtitle: 'Usa el correo aprobado por administracion y tu contrasena actual.',
+                subtitle:
+                    'Usa el correo aprobado por administracion y tu contrasena actual.',
                 icon: FontAwesomeIcons.rightToBracket,
                 footer: Column(
                   children: [
@@ -83,7 +92,9 @@ class _DriverLoginPageState extends State<DriverLoginPage> {
                         labelText: 'Correo electronico',
                         prefixIcon: Icon(Icons.alternate_email_rounded),
                       ),
-                      validator: (v) => (v ?? '').trim().isEmpty ? 'Ingresa tu correo.' : null,
+                      validator: (v) => (v ?? '').trim().isEmpty
+                          ? 'Ingresa tu correo.'
+                          : null,
                     ),
                     const SizedBox(height: 12),
                     TextFormField(
@@ -93,11 +104,15 @@ class _DriverLoginPageState extends State<DriverLoginPage> {
                         labelText: 'Contrasena',
                         prefixIcon: const Icon(Icons.lock_outline_rounded),
                         suffixIcon: IconButton(
-                          onPressed: () => setState(() => _obscurePassword = !_obscurePassword),
-                          icon: Icon(_obscurePassword ? Icons.visibility_outlined : Icons.visibility_off_outlined),
+                          onPressed: () => setState(
+                              () => _obscurePassword = !_obscurePassword),
+                          icon: Icon(_obscurePassword
+                              ? Icons.visibility_outlined
+                              : Icons.visibility_off_outlined),
                         ),
                       ),
-                      validator: (v) => (v ?? '').isEmpty ? 'Ingresa tu contrasena.' : null,
+                      validator: (v) =>
+                          (v ?? '').isEmpty ? 'Ingresa tu contrasena.' : null,
                     ),
                     const SizedBox(height: 16),
                     ElevatedButton(
@@ -123,7 +138,9 @@ class _DriverLoginPageState extends State<DriverLoginPage> {
                       ],
                     ),
                     const SizedBox(height: 10),
-                    StatusBanner(text: _status, isError: _status.isNotEmpty && _status != 'OK'),
+                    StatusBanner(
+                        text: _status,
+                        isError: _status.isNotEmpty && _status != 'OK'),
                   ],
                 ),
               ),

@@ -25,11 +25,13 @@ class LineSelectionController extends ChangeNotifier {
       return;
     }
     try {
-      await _api.dio.post('/buses/$busId/change-line', data: {'line_id': newLineId}, options: await _api.auth());
+      await _api.dio.post('/buses/$busId/change-line',
+          data: {'line_id': newLineId}, options: await _api.auth());
       await prefs.setString('selected_line_id', newLineId);
       status = 'Linea actualizada correctamente.';
-    } catch (_) {
-      status = 'No se pudo cambiar la linea.';
+    } catch (error) {
+      status = DriverApi.describeError(error,
+          fallback: 'No se pudo cambiar la linea.');
     }
     _notify();
   }

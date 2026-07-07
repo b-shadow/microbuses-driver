@@ -53,7 +53,12 @@ class _DriverRegisterPageState extends State<DriverRegisterPage> {
       if (!mounted) return;
       Navigator.pushReplacementNamed(context, AppRouter.login);
     } catch (error) {
-      setState(() => _status = 'No se pudo registrar el conductor.');
+      setState(
+        () => _status = DriverApi.describeError(
+          error,
+          fallback: 'No se pudo registrar el conductor.',
+        ),
+      );
     } finally {
       if (mounted) {
         setState(() => _loading = false);
@@ -170,9 +175,8 @@ class _DriverRegisterPageState extends State<DriverRegisterPage> {
                               : Icons.visibility_off_outlined),
                         ),
                       ),
-                      validator: (v) => (v ?? '').length < 6
-                          ? 'Minimo 6 caracteres.'
-                          : null,
+                      validator: (v) =>
+                          (v ?? '').length < 6 ? 'Minimo 6 caracteres.' : null,
                     ),
                     const SizedBox(height: 16),
                     ElevatedButton(
@@ -183,8 +187,8 @@ class _DriverRegisterPageState extends State<DriverRegisterPage> {
                                 _register();
                               }
                             },
-                      child:
-                          Text(_loading ? 'Registrando...' : 'Solicitar acceso'),
+                      child: Text(
+                          _loading ? 'Registrando...' : 'Solicitar acceso'),
                     ),
                     const SizedBox(height: 12),
                     Row(

@@ -25,10 +25,11 @@ class DriverProfileController extends ChangeNotifier {
       profile = Map<String, dynamic>.from((res.data['data'] ?? {}) as Map);
       profileJson = const JsonEncoder.withIndent('  ').convert(profile);
       status = profile.isEmpty ? 'Sin datos de perfil.' : 'Perfil cargado.';
-    } catch (_) {
+    } catch (error) {
       profile = {};
-      profileJson = 'No se pudo cargar el perfil.';
-      status = 'No se pudo cargar el perfil.';
+      status = DriverApi.describeError(error,
+          fallback: 'No se pudo cargar el perfil.');
+      profileJson = status;
     }
     _notify();
   }

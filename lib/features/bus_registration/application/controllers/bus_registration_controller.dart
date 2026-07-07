@@ -46,11 +46,13 @@ class BusRegistrationController extends ChangeNotifier {
           }).where((line) => line.id > 0),
         );
       if (status.isEmpty) {
-        status = lines.isEmpty ? 'No hay lineas disponibles.' : 'Lineas cargadas.';
+        status =
+            lines.isEmpty ? 'No hay lineas disponibles.' : 'Lineas cargadas.';
       }
-    } catch (_) {
+    } catch (error) {
       lines.clear();
-      status = 'No se pudieron cargar lineas.';
+      status = DriverApi.describeError(error,
+          fallback: 'No se pudieron cargar lineas.');
     }
     _notify();
   }
@@ -79,8 +81,9 @@ class BusRegistrationController extends ChangeNotifier {
       isLoading = false;
       _notify();
       return true;
-    } catch (_) {
-      status = 'No se pudo registrar el microbus.';
+    } catch (error) {
+      status = DriverApi.describeError(error,
+          fallback: 'No se pudo registrar el microbus.');
       isLoading = false;
       _notify();
       return false;

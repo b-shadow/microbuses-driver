@@ -25,9 +25,10 @@ class AuditViewController extends ChangeNotifier {
         ..clear()
         ..addAll(items);
       status = rows.isEmpty ? 'Sin eventos.' : 'Eventos cargados.';
-    } catch (_) {
+    } catch (error) {
       rows.clear();
-      status = 'No se pudo cargar auditoria.';
+      status = DriverApi.describeError(error,
+          fallback: 'No se pudo cargar auditoria.');
     }
     _notify();
   }

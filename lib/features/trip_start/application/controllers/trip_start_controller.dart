@@ -1,8 +1,8 @@
-﻿import 'package:flutter/foundation.dart';
-import 'package:geolocator/geolocator.dart';
+import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../core/services/driver_api.dart';
+import '../../../../core/services/location_permission_service.dart';
 
 class DriverOperationLineOption {
   const DriverOperationLineOption({
@@ -15,9 +15,14 @@ class DriverOperationLineOption {
 }
 
 class TripStartController extends ChangeNotifier {
-  TripStartController({DriverApi? api}) : _api = api ?? DriverApi();
+  TripStartController({
+    DriverApi? api,
+    DriverLocationPermissionService? locationService,
+  })  : _api = api ?? DriverApi(),
+        _locationService = locationService ?? DriverLocationPermissionService();
 
   final DriverApi _api;
+  final DriverLocationPermissionService _locationService;
   bool _disposed = false;
 
   bool isLoading = false;
@@ -40,7 +45,10 @@ class TripStartController extends ChangeNotifier {
   DateTime? _parseServerDate(String? value) {
     if (value == null || value.trim().isEmpty) return null;
     final raw = value.trim();
-    final normalized = raw.contains('Z') || RegExp(r'([+-]\d{2}:\d{2})$').hasMatch(raw) ? raw : '${raw}Z';
+    final normalized =
+        raw.contains('Z') || RegExp(r'([+-]\d{2}:\d{2})$').hasMatch(raw)
+            ? raw
+            : '${raw}Z';
     return DateTime.tryParse(normalized);
   }
 
@@ -64,20 +72,17 @@ class TripStartController extends ChangeNotifier {
   }
 
   Future<void> loadCurrentLocation() async {
-    try {
-      var permission = await Geolocator.checkPermission();
-      if (permission == LocationPermission.denied) {
-        permission = await Geolocator.requestPermission();
-      }
-      if (permission == LocationPermission.denied || permission == LocationPermission.deniedForever) {
-        return;
-      }
-      final position = await Geolocator.getCurrentPosition();
-      currentLat = position.latitude;
-      currentLng = position.longitude;
-    } catch (_) {
-      // fallback to default point
+    final result = await _locationService.currentPosition();
+    if (!result.hasPosition) {
+      status =
+          result.message ?? 'No se pudo obtener la ubicacion del dispositivo.';
+      _notify();
+      return;
     }
+
+    final position = result.position!;
+    currentLat = position.latitude;
+    currentLng = position.longitude;
     _notify();
   }
 
@@ -98,9 +103,10 @@ class TripStartController extends ChangeNotifier {
           }
         }
       }
-    } catch (_) {
+    } catch (error) {
       buses.clear();
-      status = 'No se pudieron cargar microbuses.';
+      status = DriverApi.describeError(error,
+          fallback: 'No se pudieron cargar microbuses.');
     }
     _notify();
   }
@@ -120,9 +126,10 @@ class TripStartController extends ChangeNotifier {
             );
           }).where((line) => line.id.isNotEmpty),
         );
-    } catch (_) {
+    } catch (error) {
       if (status.isEmpty) {
-        status = 'No se pudieron cargar lineas.';
+        status = DriverApi.describeError(error,
+            fallback: 'No se pudieron cargar lineas.');
       }
     }
     _notify();
@@ -183,14 +190,16 @@ class TripStartController extends ChangeNotifier {
       await prefs.setString('selected_line_id', newLineId);
       status = 'Linea operativa actualizada.';
       await loadBuses();
-    } catch (_) {
-      status = 'No se pudo cambiar la linea.';
+    } catch (error) {
+      status = DriverApi.describeError(error,
+          fallback: 'No se pudo cambiar la linea.');
     }
     isLoading = false;
     _notify();
   }
 
-  Future<String?> startTrip({required String busId, required String lineId}) async {
+  Future<String?> startTrip(
+      {required String busId, required String lineId}) async {
     isLoading = true;
     status = 'Iniciando recorrido...';
     _notify();
@@ -223,8 +232,9 @@ class TripStartController extends ChangeNotifier {
       isLoading = false;
       _notify();
       return tripId;
-    } catch (_) {
-      status = 'No se pudo iniciar el recorrido.';
+    } catch (error) {
+      status = DriverApi.describeError(error,
+          fallback: 'No se pudo iniciar el recorrido.');
       isLoading = false;
       _notify();
       return null;

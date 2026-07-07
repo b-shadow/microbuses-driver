@@ -25,15 +25,19 @@ class BusAssignmentController extends ChangeNotifier {
       buses
         ..clear()
         ..addAll(items);
-      status = buses.isEmpty ? 'Sin microbuses disponibles.' : 'Microbuses cargados.';
-    } catch (_) {
+      status = buses.isEmpty
+          ? 'Sin microbuses disponibles.'
+          : 'Microbuses cargados.';
+    } catch (error) {
       buses.clear();
-      status = 'No se pudieron cargar microbuses.';
+      status = DriverApi.describeError(error,
+          fallback: 'No se pudieron cargar microbuses.');
     }
     _notify();
   }
 
-  Future<void> selectBus({required String busId, required String lineId}) async {
+  Future<void> selectBus(
+      {required String busId, required String lineId}) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('selected_bus_id', busId);
     await prefs.setString('selected_line_id', lineId);

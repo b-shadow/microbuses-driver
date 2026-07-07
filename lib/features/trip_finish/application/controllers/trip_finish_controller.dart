@@ -24,7 +24,10 @@ class TripFinishController extends ChangeNotifier {
   DateTime? _parseServerDate(String? value) {
     if (value == null || value.trim().isEmpty) return null;
     final raw = value.trim();
-    final normalized = raw.contains('Z') || RegExp(r'([+-]\d{2}:\d{2})$').hasMatch(raw) ? raw : '${raw}Z';
+    final normalized =
+        raw.contains('Z') || RegExp(r'([+-]\d{2}:\d{2})$').hasMatch(raw)
+            ? raw
+            : '${raw}Z';
     return DateTime.tryParse(normalized);
   }
 
@@ -46,7 +49,8 @@ class TripFinishController extends ChangeNotifier {
     startedAt = _parseServerDate(localStarted);
 
     try {
-      final res = await _api.dio.post('/active-trips/$tripId/finish', options: await _api.auth());
+      final res = await _api.dio
+          .post('/active-trips/$tripId/finish', options: await _api.auth());
       final data = Map<String, dynamic>.from((res.data['data'] ?? {}) as Map);
       startedAt = _parseServerDate(data['started_at']?.toString());
       finishedAt = _parseServerDate(data['finished_at']?.toString());
@@ -57,8 +61,9 @@ class TripFinishController extends ChangeNotifier {
       isLoading = false;
       _notify();
       return true;
-    } catch (_) {
-      status = 'No se pudo finalizar el recorrido.';
+    } catch (error) {
+      status = DriverApi.describeError(error,
+          fallback: 'No se pudo finalizar el recorrido.');
       isLoading = false;
       _notify();
       return false;
